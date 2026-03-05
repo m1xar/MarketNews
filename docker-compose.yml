@@ -1,0 +1,31 @@
+services:
+  api:
+    build: .
+    container_name: marketnews-api
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      PGHOST: postgres
+      PGPORT: "5432"
+      PGUSER: marketnews
+      PGPASSWORD: marketnews
+      PGDATABASE: marketnews
+      PGSSLMODE: disable
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:16
+    container_name: marketnews-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: marketnews
+      POSTGRES_PASSWORD: marketnews
+      POSTGRES_DB: marketnews
+    volumes:
+      - marketnews_pgdata:/var/lib/postgresql/data
+
+volumes:
+  marketnews_pgdata:
